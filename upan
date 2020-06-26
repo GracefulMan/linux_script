@@ -1,0 +1,10 @@
+#!/bin/bash
+total_disk=$[$(ls -l /dev/sd*|wc -l)/2] # output the number of disk.
+for((i=1;i<=$total_disk;i++));
+do
+	tmp_id=$(printf \\x`printf %x $((96+$i))`)
+	tmp="dev/sd"$tmp_id
+	diskinfo=`sudo fdisk -l|grep $tmp|wc -l`
+	[ "$diskinfo" == 2 ] && (test -d /media/mhy$i &&echo "exist /media/mhy$i"||sudo mkdir /media/mhy$i )&& sudo mount /"$tmp"1 /media/mhy$i && echo "mount success mount disk:$tmp to /media/mhy$i"
+	ln -s /media/mhy$i /home/pi/
+done

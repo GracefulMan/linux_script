@@ -1,0 +1,19 @@
+#!/bin/bash
+# this file is used to eject the u disk.
+[ -z "$1" ] && echo 'invalid disk num.' && exit 0
+if [ "$1" == "all" ];then
+	total_disk=$[$(ls -l /dev/sd*|wc -l)/2] # output the number of disk.
+	for((i=1;i<=$total_disk;i++));
+	do
+		sudo umount /media/mhy$i
+		sudo rm -rf /home/pi/mhy$i
+		sudo rm -rf /media/mhy$i
+		echo "ejected mhy$i"
+	done
+	exit 0
+fi
+sudo umount /media/mhy$1
+sudo rm -rf /home/pi/mhy$1
+sudo rm -rf /media/mhy$1
+echo "ejected mhy$1"
+
